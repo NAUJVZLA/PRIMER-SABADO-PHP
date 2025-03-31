@@ -5,7 +5,7 @@ $users = [
         'id' => 1,
         'name' => 'Ana Martínez',
         'email' => 'ana@example.com',
-        'password' => password_hash('password123', PASSWORD_DEFAULT), // Para login
+        'password' => password_hash('password123', PASSWORD_DEFAULT),
     ],
     [
         'id' => 2,
