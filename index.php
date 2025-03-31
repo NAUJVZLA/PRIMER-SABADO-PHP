@@ -1,8 +1,10 @@
 <?php
+// Inicia la sesión para manejar el estado del usuario
 session_start();
+// Incluye el archivo de datos que contiene los usuarios y posts
 require_once 'data.php';
 
-// Si ya hay sesión, redirigir al dashboard
+// Si el usuario ya ha iniciado sesión, redirige al dashboard
 if (isset($_SESSION['user_id'])) {
     header('Location: dashboard.php');
     exit();
@@ -10,15 +12,17 @@ if (isset($_SESSION['user_id'])) {
 
 $error = '';
 
+// Verifica si el formulario de login ha sido enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
     
-    // Buscar usuario por email
+    // Busca el usuario por email en el array de usuarios
     $user = array_filter($users, function($u) use ($email) {
         return $u['email'] === $email;
     });
     
+    // Si el usuario existe y la contraseña es correcta, inicia sesión
     if ($user = reset($user)) {
         if (password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
@@ -28,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     
+    // Si las credenciales son incorrectas, muestra un mensaje de error
     $error = 'Credenciales inválidas';
 }
 ?>
@@ -38,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <!-- Incluye Bootstrap para estilos -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
@@ -53,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="alert alert-danger"><?php echo $error; ?></div>
                         <?php endif; ?>
                         
+                        <!-- Formulario de inicio de sesión -->
                         <form method="POST">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email:</label>

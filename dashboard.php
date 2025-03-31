@@ -1,14 +1,16 @@
 <?php
+// Inicia la sesión para verificar el estado del usuario
 session_start();
+// Incluye el archivo de datos que contiene los usuarios y posts
 require_once 'data.php';
 
-// Verificar si hay sesión activa
+// Verifica si hay una sesión activa, si no, redirige al login
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.php');
     exit();
 }
 
-// Filtrar solo los posts publicados
+// Filtra los posts para mostrar solo los que están publicados
 $published_posts = array_filter($posts, function($post) {
     return $post['status'] === 'published';
 });
@@ -19,6 +21,7 @@ $published_posts = array_filter($posts, function($post) {
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
+    <!-- Incluye Bootstrap para estilos -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
@@ -28,6 +31,7 @@ $published_posts = array_filter($posts, function($post) {
             <div class="navbar-text text-white me-3">
                 Bienvenido(a), <?php echo htmlspecialchars($_SESSION['user_name']); ?>
             </div>
+            <!-- Enlace para cerrar sesión -->
             <a href="logout.php" class="btn btn-outline-light">Cerrar Sesión</a>
         </div>
     </nav>
